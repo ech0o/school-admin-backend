@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.manage.Mapper.StudentMapper">
+    <resultMap id="studentMap" type="com.test.manage.Entity.Student">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="cid" property="sclass"/>
+        <result column="birth" property="birthDate"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+    <select id="findStudentByName" parameterType="String" resultMap="studentMap">
+        select *
+        from student
+        where name = #{name}
+    </select>
+
+    <select id="findStudentById" parameterType="int" resultMap="studentMap">
+        select *
+        from student
+        where id = #{id}
+    </select>
+
+    <update id="updateStudent" parameterType="com.test.manage.Entity.Student">
+        update student
+        <set>
+        <if test="name!=null">name=#{name},</if>
+        <if test="age!=null">age=#{age},</if>
+        <if test="sclass!=null">cid=#{sclass},</if>
+        <if test="birthDate!=null">birth=#{birthDate},</if>
+        <if test="gender!=null">gender=#{gender}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <insert id="insertStudent" parameterType="com.test.manage.Entity.Student" useGeneratedKeys="true" keyProperty="id">
+        insert into student(id, name, age, cid, birth, gender)
+        values (#{id}, #{name}, #{age}, #{sclass}, #{birthDate},
+                #{gender})
+    </insert>
+
+    <delete id="deleteStudent" parameterType="Int">
+        delete
+        from student
+        where id = #{id}
+    </delete>
+
+    <select id="findAll" resultMap="studentMap">
+        select *
+        from student
+    </select>
+
+    <select id="getAllStudentByPage" parameterType="Integer" resultMap="studentMap">
+        select *
+        from student
+        where cid = #{clazzId}
+        limit #{size} offset #{page}
+    </select>
+
+    <select id="getTotal" resultType="long">
+        select count(*)
+        from student
+        where cid = #{clazz};
+    </select>
+
+</mapper>

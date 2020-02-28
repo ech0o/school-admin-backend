@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.manage.Mapper.ClazzMapper">
+    <resultMap id="sclassMap" type="com.test.manage.Entity.Sclass">
+        <id column="sid" property="id" />
+        <result column="name" property="name" />
+        <collection property="students" ofType="com.test.manage.Entity.Student">
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+            <result column="age" property="age" />
+        </collection>
+    </resultMap>
+
+    <select id="getAllClazz" resultMap="sclassMap">
+        select sid,name from sclass
+    </select>
+    
+    <select id="getClazz" parameterType="Integer" resultMap="sclassMap">
+        select  c.*, s.id,s.name,s.age from sclass c left join student s on s.cid=c.sid where c.sid = #{id}
+    </select>
+
+    <select id="getClazzById" resultMap="sclassMap">
+        select * from sclass where sid=#{id}
+    </select>
+
+    <update id="updateClazz" parameterType="com.test.manage.Entity.Sclass">
+        update sclass set name=#{name} where sid=#{id}
+    </update>
+
+    <insert id="addClazz" parameterType="com.test.manage.Entity.Sclass" useGeneratedKeys="true" keyProperty="id">
+        insert into sclass(name) values (#{name})
+    </insert>
+
+    <delete id="deleteClazz" parameterType="Integer">
+        delete from sclass where sid=#{id}
+    </delete>
+
+    <select id="getClazzByPage" resultMap="sclassMap">
+        select * from sclass order by name limit #{size} offset #{page}
+    </select>
+
+    <select id="getTotal" resultType="long">
+        select count(*) from sclass;
+    </select>
+</mapper>
