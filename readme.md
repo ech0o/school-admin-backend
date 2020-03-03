@@ -6,6 +6,6 @@ based on spring boot, spring security, jjwt, mybatis
 databases: mysql, mongodb
 
 ## Features
-REST
-user authorization
-basic CRUD
+* REST
+* user authorization
+* basic CRUD
